@@ -15,7 +15,7 @@
 
 set -o pipefail
 
-WORK_DIR="/home/z/my-project"
+WORK_DIR="/workspace/mm_api"
 LOG_FILE="$WORK_DIR/seamless.log"
 PID_FILE="$WORK_DIR/watchdog.pid"
 PROXY_SCRIPT="$WORK_DIR/proxy.py"
@@ -79,7 +79,7 @@ start_services() {
 
     # 配置 ngrok authtoken
     if [ -n "$NGROK_AUTHTOKEN" ]; then
-        ngrok config add-authtoken "$NGROK_AUTHTOKEN" 2>/dev/null
+        /tmp/ngrok config add-authtoken "$NGROK_AUTHTOKEN" 2>/dev/null
         info "ngrok authtoken 已配置"
     fi
 
@@ -117,7 +117,7 @@ start_services() {
         sleep 0.5
         
         # 使用 setsid 创建独立进程组
-        setsid ngrok http http://127.0.0.1:8082 \
+        setsid /tmp/ngrok http http://127.0.0.1:8082 \
             --log=stdout --log-format=logfmt \
             >> "$LOG_FILE" 2>&1 &
         
